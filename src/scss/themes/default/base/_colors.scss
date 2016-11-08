@@ -1,0 +1,124 @@
+// ===========================================
+// Color - Default Theme
+// ===========================================
+
+$bright-gray: #edf2f4;
+$gray: #d8dcde;
+$deep-gray: #979b9c;
+$navy: #8d99ae;
+$blues: #2b2d42;
+$bright-blues: #51a7e8;
+$white: #fff;
+$black: #0c0d12;
+$pink: #ef233c;
+$bright-red: #dc1a3c;
+$red: #d90429;
+$bright-green: #60b044;
+$green: #569e3d;
+$deep-green: #5ca941;
+
+// -------------------------------------------
+// Super Global Color
+// -------------------------------------------
+
+$theme-color-text: $black;
+$theme-color-background: $white;
+
+$theme-color-success: $green;
+
+// -------------------------------------------
+// Component Color
+// -------------------------------------------
+
+// Link
+$theme-color-link-cta-normal: (
+    dark: $red,
+    light: $bright-gray
+);
+
+$theme-color-link-cta-hover: (
+    dark: $bright-red,
+    light: $white
+);
+
+// Button
+$theme-color-button-disabled: (
+    background: $gray,
+    foreground: $deep-gray
+);
+
+$theme-color-button-common-normal: (
+    background: $white,
+    foreground: $black
+);
+
+$theme-color-button-common-hover: (
+    background: $bright-gray,
+    foreground: $black
+);
+
+$theme-color-button-cta-normal: (
+    background: $bright-green,
+    foreground: $white
+);
+
+$theme-color-button-cta-hover: (
+    background: $green,
+    foreground: $white
+);
+
+$theme-color-button-inverse-cta-normal: (
+    background: transparent,
+    foreground: $bright-green
+);
+
+$theme-color-button-inverse-cta-hover: (
+    background: transparent,
+    foreground: $green
+);
+
+// Box
+
+$theme-color-box-text: $white;
+
+$theme-color-box-header: (
+    background: $bright-gray,
+    foreground: $gray
+);
+
+$theme-color-box-header-danger: (
+    background: $pink,
+    foreground: $red
+);
+
+$theme-color-box-content: (
+    background: $white,
+    foreground: $gray
+);
+
+
+// Notification
+
+$theme-color-notif-text: $white;
+
+$theme-color-notif-success: (
+    background: $green,
+    foreground: $deep-green
+);
+
+$theme-color-notif-error: (
+    background: $pink,
+    foreground: $red
+);
+
+$theme-color-notif-warning: (
+    background: $green,
+    foreground: $deep-green
+);
+
+// Dropdown
+$theme-color-dropdown-item-hover: $bright-gray;
+$theme-color-dropdown-background: $white;
+
+// Field
+$theme-color-field-background: $white;
