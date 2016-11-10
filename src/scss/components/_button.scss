@@ -99,6 +99,15 @@ $button-prefix: "btn";
     &:hover {
         opacity: 1;
     }
+
+    &--top {
+        top: 20px;
+        bottom: initial;
+    }
+
+    &--super {
+        z-index: 9999;
+    }
 }
 
 // -------------------------------------------

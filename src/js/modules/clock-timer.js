@@ -5,7 +5,7 @@ var ClockTimer = function (context) {
 
   'use strict';
 
-  var el, currentTime, endTime, timer;
+  var el, timer;
 
   var INTERVAL = 1000; // ms
 
@@ -29,6 +29,23 @@ var ClockTimer = function (context) {
 
   function pad(num, size){ return ('000000000' + num).substr(-size); }
 
+  function getData(data, func) {
+    if (window.chrome) {
+      chrome.storage.local.get(data, func);
+    } else {
+      data = JSON.parse(localStorage.getItem(KEY));
+      func(data);
+    }
+  }
+
+  function setData(data) {
+    if (window.chrome) {
+      chrome.storage.local.set(data);
+    } else {
+      localStorage.setItem(KEY, JSON.stringify(data));
+    }
+  }
+
   return {
 
     isPaused: false,
@@ -37,14 +54,10 @@ var ClockTimer = function (context) {
 
     init: function() {
       el = context.getElement();
-      currentTime = Moment();
-      endTime = Moment();
     },
 
     destroy: function() {
       el = null;
-      currentTime = null;
-      endTime = null;
       timer = null;
     },
 
@@ -54,7 +67,8 @@ var ClockTimer = function (context) {
                'clock-timer-reset',
                'clock-timer-save',
                'clock-timer-clear',
-               'clock-timer-set-duration'],
+               'clock-timer-set-duration',
+              'clock-timer-generate-chart'],
 
     // @param {string} name
     // @param {html string} data
@@ -73,10 +87,17 @@ var ClockTimer = function (context) {
         this.reset();
         break;
       case 'clock-timer-save':
-        this.save();
+        var dataset = {};
+        dataset[KEY] = [];
+        getData(dataset, this.save.bind(this));
         break;
       case 'clock-timer-set-duration':
         this.setDuration(data);
+        break;
+      case 'clock-timer-generate-chart':
+        var key = {};
+        key[KEY] = [];
+        getData(key, this.generateChart.bind(this));
         break;
       }
     },
@@ -117,20 +138,18 @@ var ClockTimer = function (context) {
       this.isPaused = false;
     },
 
-    save: function() {
-      var list = localStorage.getItem(KEY);
-      var data = {duration: this.duration, createdAt: Moment()};
-      if (list) {
-        list = JSON.parse(list);
-        if (list.length > 30) {
-          list.pop();
-        }
-        list.unshift(data);
+    save: function(item) {
+      var data = {duration: this.duration, createdAt: Moment().toISOString()};
+      if (item === null) {
+        item = {};
+        item[KEY] = [data];
       } else {
-        list = [];
-        list.push(data);
+        if (item[KEY].length > 30) {
+          item[KEY].pop();
+        }
+        item[KEY].unshift(data);
       }
-      localStorage.setItem(KEY, JSON.stringify(list));
+      setData(item);
     },
 
     // Reset clock
@@ -139,10 +158,8 @@ var ClockTimer = function (context) {
     reset: function() {
       this.isPaused = false;
       this.duration = 0;
-      endTime = Moment();
       window.clearInterval(timer);
       this.render();
-      context.broadcast('clock-action-reset');
     },
 
     render: function() {
@@ -153,6 +170,19 @@ var ClockTimer = function (context) {
         target.classList.remove('u-text--success');
       }
       target.innerHTML = secondsToTime(this.duration);
+    },
+
+    generateChart: function(data) {
+      data = data[KEY];
+      var labels = [];
+      var datasets = [];
+      if (data) {
+        data.forEach(function(item) {
+          labels.push(Moment(item.createdAt).format('YYYY-MM-DD'));
+          datasets.push(Moment.duration(secondsToTime(item.duration, true)).asHours());
+        });
+      }
+      context.broadcast('clock-chart-generate', {labels: labels, datasets: datasets});
     }
 
   };

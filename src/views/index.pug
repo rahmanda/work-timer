@@ -3,17 +3,17 @@ html(lang='en')
   head
     title Work Timer
     link(href='assets/css/app.css', rel='stylesheet')
-  body.container
+  body.container(data-module='container')
     .row(style='margin-top: 12.5%')
       .gr-6.gr-centered
         .js-timer.is-hidden(data-module='clock-timer')
           .js-time.u-text--hero.u-text--bold 00:00:00
         .js-timer-input(data-module='clock-action')
-          input.field__input.js-timer-hour(type='text', value='00', maxlength='2', data-type='clock-action-set-duration-hour', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
+          input.field__input.js-timer-hour(type='text', value='00', maxlength='2', data-type='input-zeroed', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
           span(style='font-size: 150px; font-weight: bold; line-height: 1.2; float: left;') :
-          input.field__input.js-timer-minute(type='text', value='00', maxlength='2', data-type='clock-action-set-duration-minute', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
+          input.field__input.js-timer-minute(type='text', value='00', maxlength='2', data-type='input-zeroed', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
           span(style='font-size: 150px; font-weight: bold; line-height: 1.2; float: left;') :
-          input.field__input.js-timer-second(type='text', value='00', maxlength='2', data-type='clock-action-set-duration-second', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
+          input.field__input.js-timer-second(type='text', value='00', maxlength='2', data-type='input-zeroed', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
       .gr-12.u-text--centered(data-module='clock-action')
         .btn-group
           button.btn.btn--common.js-clock-action-start(data-type='clock-action-start') Start
@@ -21,4 +21,7 @@ html(lang='en')
           button.btn.btn--common.js-clock-action-pause(disabled='disabled', data-type='clock-action-pause') Pause
           button.btn.btn--common.js-clock-action-reset(disabled='disabled', data-type='clock-action-reset') Reset
         .btn-contextual.btn.btn--icon.i-archive.js-clock-action-save(disabled='disabled', data-type='clock-action-save')
+        .btn-contextual.btn-contextual--top.btn-contextual--super.btn.btn--icon.i-navicon-round.js-clock-action-chart(data-type='clock-action-chart')
+      .gr-12.ipage.js-chart
+        canvas(data-module='clock-chart')
     script(src='assets/js/app.min.js', type="text/javascript")

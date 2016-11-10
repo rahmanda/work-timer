@@ -3,22 +3,11 @@ var Moment = require('moment');
 var ClockAction = function (context) {
   'use strict';
 
-  var hour, minute, second;
-
   return {
-    init: function() {
-      hour = 0;
-      minute = 0;
-      second = 0;
-    },
-
-    destroy: function() {
-      hour = null;
-      minute = null;
-      second = null;
-    },
+    behaviors: ['input-zeroed'],
 
     messages: ['clock-action-reset',
+               'clock-action-chart',
                'clock-action-timer-update'],
 
     onmessage: function(name, data) {
@@ -77,35 +66,45 @@ var ClockAction = function (context) {
         this.disable('reset');
         this.disable('save');
         this.disableInput(false);
+        this.onmessage('clock-action-reset');
         break;
       case 'clock-action-save':
         context.broadcast('clock-timer-save');
         break;
+      case 'clock-action-chart':
+        el.classList.toggle('i-navicon-round');
+        el.classList.toggle('i-arrow-right-c');
+        var chart = document.getElementsByClassName('js-chart')[0];
+        chart.classList.toggle('is-open');
+        if (chart.classList.contains('is-open')) context.broadcast('clock-timer-generate-chart');
+        break;
       }
     },
 
-    onkeyup: function(ev, el, evType) {
-      switch (evType) {
-      case 'clock-action-set-duration-hour':
-        context.broadcast('clock-timer-set-duration', this.getDuration({hour: el.value === '' ? '0' : el.value}));
-        break;
-      case 'clock-action-set-duration-minute':
-        context.broadcast('clock-timer-set-duration', this.getDuration({minute: el.value === '' ? '0' : el.value}));
-        break;
-      case 'clock-action-set-duration-second':
-        context.broadcast('clock-timer-set-duration', this.getDuration({second: el.value === '' ? '0' : el.value}));
+    onkeyup: function(ev, el, elType) {
+      switch (elType) {
+      case 'input-zeroed':
+        context.broadcast('clock-timer-set-duration', this.getDuration(this.getInputValue()));
         break;
       }
+    },
+
+    getInputValue: function() {
+      var hour = document.getElementsByClassName('js-timer-hour')[0];
+      var minute = document.getElementsByClassName('js-timer-minute')[0];
+      var second = document.getElementsByClassName('js-timer-second')[0];
+
+      return {
+        hour: hour.value === '' ? '0' : hour.value,
+        minute: minute.value === '' ? '0' : minute.value,
+        second: second.value === '' ? '0' : second.value
+      };
     },
 
     getDuration: function(time) {
-      if (time.hasOwnProperty('hour')) {
-        hour = parseInt(time.hour, 10);
-      } else if (time.hasOwnProperty('minute')) {
-        minute = parseInt(time.minute, 10);
-      } else if (time.hasOwnProperty('second')) {
-        second = parseInt(time.second, 10);
-      }
+      var hour = parseInt(time.hour, 10);
+      var minute = parseInt(time.minute, 10);
+      var second = parseInt(time.second, 10);
 
       return Moment.duration({hour: hour, minute: minute, second: second}).asSeconds();
     },
