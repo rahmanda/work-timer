@@ -10,6 +10,7 @@ var ClockTimer = function (context) {
   var INTERVAL = 1000; // ms
 
   var KEY = 'wrktmrlst';
+  var SETTING_KEY = 'wrktmrsttng';
 
   function secondsToTime(secs, json){
     json = json === undefined ? false : json;
@@ -29,31 +30,17 @@ var ClockTimer = function (context) {
 
   function pad(num, size){ return ('000000000' + num).substr(-size); }
 
-  function getData(data, func) {
-    if (window.chrome) {
-      chrome.storage.local.get(data, func);
-    } else {
-      data = JSON.parse(localStorage.getItem(KEY));
-      func(data);
-    }
-  }
-
-  function setData(data) {
-    if (window.chrome) {
-      chrome.storage.local.set(data);
-    } else {
-      localStorage.setItem(KEY, JSON.stringify(data));
-    }
-  }
-
   return {
 
     isPaused: false,
 
     duration: 0,
 
+    storage: null,
+
     init: function() {
       el = context.getElement();
+      this.storage = context.getService('storage');
     },
 
     destroy: function() {
@@ -89,7 +76,7 @@ var ClockTimer = function (context) {
       case 'clock-timer-save':
         var dataset = {};
         dataset[KEY] = [];
-        getData(dataset, this.save.bind(this));
+        this.storage.get(KEY, dataset, this.save.bind(this));
         break;
       case 'clock-timer-set-duration':
         this.setDuration(data);
@@ -97,7 +84,7 @@ var ClockTimer = function (context) {
       case 'clock-timer-generate-chart':
         var key = {};
         key[KEY] = [];
-        getData(key, this.generateChart.bind(this));
+        this.storage.get(KEY, key, this.generateChart.bind(this));
         break;
       }
     },
@@ -149,7 +136,7 @@ var ClockTimer = function (context) {
         }
         item[KEY].unshift(data);
       }
-      setData(item);
+      this.storage.set(KEY, item);
     },
 
     // Reset clock

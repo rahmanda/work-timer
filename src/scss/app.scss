@@ -1,63 +1,31 @@
 // ===========================================
-// Holy App File
+// Config
 // ===========================================
-// Include all scss files here
-// Note: Pay attention to order
+// See how it has the same structure as main
+// framework?
 
-// -------------------------------------------
-// Tools - place it here because it may be used
-// by theme
-// -------------------------------------------
+$global-use-theme: true; // set to use theme
+$theme-max-breakpoint: 100%;
 
-@import "tools/clearfix";
-@import "tools/button";
-@import "tools/border";
-@import "tools/field";
+// Exclude components you want to use
+$theme-card-enable: false;
+$theme-dropdown-enable: false;
+$theme-modal-enable: false;
+$theme-notification-enable: false;
+$theme-post-enable: false;
+$theme-quote-enable: false;
+$theme-topbar-enable: false;
+$theme-tree-enable: false;
 
-// -------------------------------------------
-// Theme - need to be imported exactly here
-// and only need one at a time
-// -------------------------------------------
-
-@import "themes/default/index";
-
-// -------------------------------------------
-// Base
-// -------------------------------------------
-
-@import "base/normalize";
-@import "base/border";
-@import "base/colors";
-@import "base/components";
 @import "base/typography";
-@import "base/grid";
 
-// -------------------------------------------
-// Elements
-// -------------------------------------------
+// If you want to modify, please add below before
+// import ayu
 
-@import "elements/heading";
-@import "elements/html";
-@import "elements/images";
-@import "elements/text";
-
-
-// -------------------------------------------
-// Components
-// -------------------------------------------
-
-@import "components/button";
 @import "components/box";
-@import "components/dropdown";
-@import "components/field";
-@import "components/modal";
-@import "components/notification";
-@import "components/sidebar";
-@import "components/inline-page";
 
-// -------------------------------------------
-// Utilities
-// -------------------------------------------
+@import "ayu";
 
-@import "utilities/margin";
+// If you want to extend, please add it below
+@import "components/button";
 @import "utilities/text";

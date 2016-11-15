@@ -1,9 +1,0 @@
-// =====================================================
-// Margin Utilities
-// =====================================================
-
-$u-margin-prefix: "u-mg";
-
-.#{$u-margin-prefix}--medium {
-    margin-bottom: map-get($global-font-size, medium);
-}

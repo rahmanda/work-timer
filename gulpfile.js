@@ -77,7 +77,7 @@ gulp.task('serve', ['sass', 'browserify', 'pug', 'static', 'images'], function()
 gulp.task('sass', function() {
   return gulp.src(PATH.sass.src)
     .pipe(sass({
-      includePaths: ['node_modules/gridle/sass', 'bower_components/Ionicons/scss']
+      includePaths: ['bower_components/ayu/src', 'bower_components/gridle/sass', 'bower_components/Ionicons/scss']
     }))
     .pipe(autoprefixer())
     .pipe(cssnano())

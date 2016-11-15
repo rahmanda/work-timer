@@ -1,100 +1,11 @@
-// =====================================================
-// Button
-// =====================================================
-// "We style it because the built-in is suck"
-
-$button-prefix: "btn";
-
-.#{$button-prefix} {
-    @include button-padding(map-get($global-font-size, medium));
-
-    display     : inline-block;
-    box-sizing  : border-box;
-
-    font-family : $global-font-family;
-    font-size   : map-get($global-font-size, medium);
-    font-weight : $global-button-font-weight;
-    text-transform: capitalize;
-
-    letter-spacing : $global-letter-spacing;
-    word-spacing   : $global-word-spacing;
-
-    margin  : 0;
-
-    position : relative;
-
-    &:hover {
-        cursor : pointer;
-    }
-
-    // -------------------------------------------
-    // Size Variants
-    // -------------------------------------------
-
-    &--small {
-        @include button-padding(map-get($global-font-size, small));
-        font-size : map-get($global-font-size, small);
-    }
-
-    &--large {
-        @include button-padding(map-get($global-font-size, large));
-        font-size : map-get($global-font-size, large);
-    }
-
-    &--x-large {
-        @include button-padding(map-get($global-font-size, x-large));
-        font-size : map-get($global-font-size, x-large);
-    }
-
-    &--block {
-        width: 100%;
-    }
-
-    &--icon {
-        padding: 0;
-    }
-}
-
-// -------------------------------------------
-// Grouped Button
-// -------------------------------------------
-
-.#{$button-prefix}-group,
-.#{$button-prefix}-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.#{$button-prefix}-group {
-    & .#{$button-prefix}:not(:first-child):not(:last-child) {
-        margin-left: -$global-border-size;
-        margin-right: -$global-border-size;
-        border-radius: 0;
-    }
-
-    & .#{$button-prefix}:first-child {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    & .#{$button-prefix}:last-child {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-}
-
-// -------------------------------------------
-// Button Contextual
-// -------------------------------------------
-
 .#{$button-prefix}-contextual {
-    position: fixed;
+    position: absolute;
     right: 20px;
     bottom: 20px;
     opacity: .5;
     transition: opacity .15s ease-out;
-    font-size: 3 * map-get($global-font-size, xx-large);
-    color: $global-color-success;
+    font-size: 3 * map-get($theme-font-size, xx-large);
+    color: $green;
 
     &:hover {
         opacity: 1;
@@ -110,74 +21,8 @@ $button-prefix: "btn";
     }
 }
 
-// -------------------------------------------
-// Color Variants
-// -------------------------------------------
-
-.#{$button-prefix}[disabled] {
-    @include border($global-border-size,
-		            $global-border-style,
-		            map-get($global-color-button-disabled, foreground),
-		            $global-border-radius);
-
-    background : map-get($global-color-button-disabled, background);
-    color      : map-get($global-color-button-disabled, foreground);
-
-    &:hover {
-        cursor       : not-allowed;
-        background   : map-get($global-color-button-disabled, background);
-        color        : map-get($global-color-button-disabled, foreground);
-        border-color : map-get($global-color-button-disabled, foreground);
-    }
-
-    &.#{$button-prefix}--icon {
-        border: 0;
-        background: 0;
-        color: initial;
-    }
-}
-
-.#{$button-prefix}--common {
-    @include border($global-border-size,
-		            $global-border-style,
-		            map-get($global-color-button-disabled, foreground),
-		            $global-border-radius);
-
-    background : map-get($global-color-button-common-normal, background);
-    color      : map-get($global-color-button-common-normal, foreground);
-
-    &:hover {
-        background : map-get($global-color-button-common-hover, background);
-    }
-}
-
-.#{$button-prefix}--cta {
-    @include border($global-border-size,
-		            $global-border-style,
-		            map-get($global-color-button-cta-normal, background),
-		            $global-border-radius);
-
-    background : map-get($global-color-button-cta-normal, background);
-    color      : map-get($global-color-button-cta-normal, foreground);
-
-    &:hover {
-        background   : map-get($global-color-button-cta-hover, background);
-        border-color : map-get($global-color-button-cta-hover, background);
-    }
-}
-
-.#{$button-prefix}--i-cta {
-    @include border($global-border-size,
-		            $global-border-style,
-		            map-get($global-color-button-inverse-cta-normal, foreground),
-		            $global-border-radius);
-
-    background : map-get($global-color-button-inverse-cta-normal, background);
-    color      : map-get($global-color-button-inverse-cta-normal, foreground);
-
-    &:hover {
-        color        : map-get($global-color-button-inverse-cta-hover, foreground);
-        background   : map-get($global-color-button-inverse-cta-hover, background);
-        border-color : map-get($global-color-button-inverse-cta-hover, foreground);
-    }
+.#{$button-prefix}[disabled].#{$button-prefix}--icon {
+    border: 0;
+    background: 0;
+    color: initial;
 }

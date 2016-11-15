@@ -26,6 +26,7 @@ var ClockAction = function (context) {
     },
 
     onclick: function(ev, el, evType) {
+      var menu, menuBtn, chart;
       switch (evType) {
       case 'clock-action-start':
         ev.preventDefault();
@@ -71,13 +72,28 @@ var ClockAction = function (context) {
       case 'clock-action-save':
         context.broadcast('clock-timer-save');
         break;
-      case 'clock-action-chart':
-        el.classList.toggle('i-navicon-round');
-        el.classList.toggle('i-arrow-right-c');
-        var chart = document.getElementsByClassName('js-chart')[0];
-        chart.classList.toggle('is-open');
-        if (chart.classList.contains('is-open')) context.broadcast('clock-timer-generate-chart');
+      case 'clock-action-menu':
+        menu = document.getElementsByClassName('js-menu')[0];
+        menu.classList.toggle('is-open');
         break;
+      case 'clock-action-menu-close':
+        menu = document.getElementsByClassName('js-menu')[0];
+        menu.classList.toggle('is-open');
+        menuBtn = document.getElementsByClassName('js-menu-btn')[0];
+        break;
+      case 'clock-action-chart':
+        menu = document.getElementsByClassName('js-menu')[0];
+        menu.classList.toggle('is-open');
+        chart = document.getElementsByClassName('js-chart')[0];
+        chart.classList.toggle('is-open');
+        context.broadcast('clock-timer-generate-chart');
+        break;
+      case 'clock-action-chart-close':
+        chart = document.getElementsByClassName('js-chart')[0];
+        chart.classList.toggle('is-open');
+        break;
+      case 'clock-action-setting':
+        context.broadcast('clock-setting');
       }
     },
 

@@ -10,8 +10,24 @@ $global-use-theme: false !default;
     @error "You should import a theme, otherwise it will not work!";
 }
 
-$global-font-family: $theme-font-family;
-$global-font-size: $theme-font-size;
-$global-line-height: $theme-line-height;
-$global-letter-spacing: $theme-letter-spacing;
-$global-word-spacing: $theme-word-spacing;
+$theme-font-size: (
+    small: 12px,
+    medium: 14px,
+    large: 18px,
+    x-large: 20px,
+    xx-large: 22px,
+    hero: 150px
+);
+
+$theme-line-height: (
+    small: 1.4,
+    medium: 1.4,
+    large: 1.2,
+    x-large: 1.2,
+    xx-large: 1.2,
+    hero: 1.2
+);
+
+$theme-font-family: "Helvetica", Arial, Sans-serif !important;
+
+$ionicons-font-path: "/typefaces";
