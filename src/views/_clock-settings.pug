@@ -1,0 +1,23 @@
+.gr-12.ipage.js-setting
+  .row(data-module='clock-setting')
+    .btn-contextual.btn-contextual--top.btn.btn--icon.i-arrow-right-c(data-type='clock-setting-close')
+    .gr-6.gr-centered
+      .box.u-mg-btm--medium(style='margin-top: 5%')
+        .box__header General
+        .box__content
+          p By default, you are not limited on how many times you can save your work duration into storage during the day. If you want to be restricted to only able to save once per day, change value below to 'once per day'.
+          .field
+            select.field__select.js-setting-unlimited(data-type='clock-setting-unlimited')
+              option(value='1') Unlimited
+              option(value='0') Once per day
+          span.box__separator
+          p Set your weekly work hours below. If it is set to more than zero, you will see how much your remaining work hours every week.
+          .field
+            input.field__input.js-setting-weekly(type='number', value='0', min='0', data-type='clock-setting-weekly-work-duration')
+          button.btn.btn--cta(data-type='clock-setting-save') Save
+    .gr-6.gr-centered
+      .box
+        .box__header Storage
+        .box__content
+          p You can save up to 14 data to local storage. You can also clear your storage by click button below.
+          button.btn.btn--common Clear Storage

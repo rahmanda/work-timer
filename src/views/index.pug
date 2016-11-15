@@ -7,55 +7,11 @@ html(lang='en')
     .container(data-module='container')
       .row(style='margin-top: 12.5%')
         .gr-6.gr-centered
-          .js-timer.is-hidden(data-module='clock-timer')
-            .js-time.u-text--hero.u-text--bold 00:00:00
-          .js-timer-input(data-module='clock-action')
-            input.field__input.js-timer-hour(type='text', value='00', maxlength='2', data-type='input-zeroed', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
-            span(style='font-size: 150px; font-weight: bold; line-height: 1.2; float: left;') :
-            input.field__input.js-timer-minute(type='text', value='00', maxlength='2', data-type='input-zeroed', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
-            span(style='font-size: 150px; font-weight: bold; line-height: 1.2; float: left;') :
-            input.field__input.js-timer-second(type='text', value='00', maxlength='2', data-type='input-zeroed', style='font-size: 150px; height: 180px; border: 0px none; font-weight: bold; padding: 0; width: 166px; float: left;')
+          include _clock-display.pug
+          include _clock-input.pug
         .gr-12.u-text--centered(data-module='clock-action')
-          .btn-group
-            button.btn.btn--common.js-clock-action-start(data-type='clock-action-start') Start
-            button.btn.btn--common.js-clock-action-resume(disabled='disabled', data-type='clock-action-resume') Resume
-            button.btn.btn--common.js-clock-action-pause(disabled='disabled', data-type='clock-action-pause') Pause
-            button.btn.btn--common.js-clock-action-reset(disabled='disabled', data-type='clock-action-reset') Reset
-          .btn-contextual.btn.btn--icon.i-archive.js-clock-action-save(disabled='disabled', data-type='clock-action-save')
-          .btn-contextual.btn-contextual--top.btn.btn--icon.i-navicon-round.js-menu-btn(data-type='clock-action-menu')
-          ul.sidebar.sidebar--super.js-menu
-            li.sidebar__item(data-type='clock-action-chart').
-              #[i.i-arrow-graph-up-right.sidebar__item-icon]
-              Trends Chart
-            li.sidebar__item(data-type='clock-action-setting').
-              #[i.i-wrench.sidebar__item-icon]
-              Settings
-            li.sidebar__item(data-type='clock-action-menu-close') Close
-        .gr-12.ipage.js-chart
-          div(data-module='clock-action')
-            .btn-contextual.btn-contextual--top.btn.btn--icon.i-arrow-right-c(data-type='clock-action-chart-close')
-          canvas(data-module='clock-chart')
-        .gr-12.ipage.js-setting
-          .row(data-module='clock-setting')
-            .btn-contextual.btn-contextual--top.btn.btn--icon.i-arrow-right-c(data-type='clock-setting-close')
-            .gr-6.gr-centered
-              .box.u-mg-btm--medium(style='margin-top: 5%')
-                .box__header General
-                .box__content
-                  p By default, you are not limited on how many times you can save your work duration into storage during the day. If you want to be restricted to only able to save once per day, change value below to 'once per day'.
-                  .field
-                    select.field__select.js-setting-unlimited(data-type='clock-setting-unlimited')
-                      option(value='1') Unlimited
-                      option(value='0') Once per day
-                  span.box__separator
-                  p Set your weekly work hours below. If it is set to more than zero, you will see how much your remaining work hours every week.
-                  .field
-                    input.field__input.js-setting-weekly(type='number', value='0', min='0', data-type='clock-setting-weekly-work-duration')
-                  button.btn.btn--cta(data-type='clock-setting-save') Save
-            .gr-6.gr-centered
-              .box
-                .box__header Storage
-                .box__content
-                  p You can save up to 14 data to local storage. You can also clear your storage by click button below.
-                  button.btn.btn--common Clear Storage
+          include _clock-controls.pug
+          include _clock-sidemenu.pug
+        include _clock-chart.pug
+        include _clock-settings.pug
       script(src='assets/js/app.min.js', type="text/javascript")
