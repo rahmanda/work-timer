@@ -4,11 +4,20 @@ var ClockAction = function (context) {
   'use strict';
 
   return {
+    setting: null, storage: null, saveCounter: 0,
+
     behaviors: ['input-zeroed'],
 
     messages: ['clock-action-reset',
-               'clock-action-chart',
-               'clock-action-timer-update'],
+               'clock-action-timer-update',
+               'clock-setting-update'],
+
+    init: function() {
+      this.storage = context.getService('clock-storage');
+      this.storageKey = context.getService('storage-key');
+      this.storage.getSetting(this.setSetting.bind(this));
+      this.storage.getSaveCounter(this.setSaveCounter.bind(this));
+    },
 
     onmessage: function(name, data) {
       switch (name) {
@@ -21,6 +30,9 @@ var ClockAction = function (context) {
         document.getElementsByClassName('js-timer-hour')[0].value = data.hour;
         document.getElementsByClassName('js-timer-minute')[0].value = data.minute;
         document.getElementsByClassName('js-timer-second')[0].value = data.second;
+        break;
+      case 'clock-setting-update':
+        this.storage.getSetting(this.setSetting.bind(this));
         break;
       }
     },
@@ -35,7 +47,7 @@ var ClockAction = function (context) {
         this.disable('pause', false);
         this.disable('resume');
         this.disable('reset');
-        this.disable('save');
+        this.disableSave();
         this.disableInput();
         break;
       case 'clock-action-pause':
@@ -45,7 +57,7 @@ var ClockAction = function (context) {
         this.disable('pause');
         this.disable('resume', false);
         this.disable('reset', false);
-        this.disable('save', false);
+        this.disableSave(false);
         this.disableInput(false);
         break;
       case 'clock-action-resume':
@@ -55,7 +67,7 @@ var ClockAction = function (context) {
         this.disable('pause', false);
         this.disable('resume');
         this.disable('reset');
-        this.disable('save');
+        this.disableSave();
         this.disableInput();
         break;
       case 'clock-action-reset':
@@ -65,12 +77,15 @@ var ClockAction = function (context) {
         this.disable('pause');
         this.disable('resume');
         this.disable('reset');
-        this.disable('save');
+        this.disableSave();
         this.disableInput(false);
         this.onmessage('clock-action-reset');
         break;
       case 'clock-action-save':
         context.broadcast('clock-timer-save');
+        this.saveCounter++;
+        this.storage.addToSaveCounter(this.saveCounter);
+        this.disableSave(false);
         break;
       case 'clock-action-menu':
         menu = document.getElementsByClassName('js-menu')[0];
@@ -106,6 +121,14 @@ var ClockAction = function (context) {
       }
     },
 
+    setSetting: function(item) {
+      this.setting = item[this.storageKey.setting];
+    },
+
+    setSaveCounter: function(item) {
+      this.saveCounter = item[this.storageKey.saveCounter];
+    },
+
     getInputValue: function() {
       var hour = document.getElementsByClassName('js-timer-hour')[0];
       var minute = document.getElementsByClassName('js-timer-minute')[0];
@@ -133,6 +156,14 @@ var ClockAction = function (context) {
         target.setAttribute('disabled', 'disabled');
       } else {
         target.removeAttribute('disabled');
+      }
+    },
+
+    disableSave: function(isDisable) {
+      if (this.setting.general.unlimited === 0 && this.saveCounter > 0) {
+        this.disable('save');
+      } else {
+        this.disable('save', isDisable);
       }
     },
 

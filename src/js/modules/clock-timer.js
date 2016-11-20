@@ -29,19 +29,9 @@ var ClockTimer = function (context) {
 
   return {
 
-    isPaused: false,
+    isPaused: false, remaining: 0, duration: 0, storage: null,
 
-    remaining: 0,
-
-    duration: 0,
-
-    storage: null,
-
-    storageKey: null,
-
-    storageDuration: 0,
-
-    setting: null,
+    storageKey: null, storageDuration: 0, setting: null,
 
     init: function() {
       el = context.getElement();
@@ -86,6 +76,7 @@ var ClockTimer = function (context) {
         break;
       case 'clock-timer-save':
         this.storage.getTime(this.save.bind(this));
+        this.getSettingFromStorage();
         context.broadcast('flash-message', 'Work time is saved');
         break;
       case 'clock-timer-set-duration':

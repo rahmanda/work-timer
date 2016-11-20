@@ -3,7 +3,8 @@ var StorageKey = function (app) {
 
   return {
     setting: 'wrktmrsttng',
-    timer: 'wrktmrlst'
+    timer: 'wrktmrlst',
+    saveCounter: 'wrktmrsvcntr'
   };
 };
 

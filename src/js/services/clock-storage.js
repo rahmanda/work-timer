@@ -42,6 +42,18 @@ var ClockStorage = function (app) {
       var dataset = {};
       dataset[this.storageKey.timer] = [];
       this.storage.get(this.storageKey.timer, dataset, callback);
+    },
+
+    addToSaveCounter: function(data, callback) {
+      var setup = {};
+      setup[this.storageKey.saveCounter] = data;
+      this.storage.set(this.storageKey.saveCounter, setup, callback);
+    },
+
+    getSaveCounter: function(callback) {
+      var defaultSetting = {};
+      defaultSetting[this.storagekey.saveCounter] = 0;
+      this.storage.get(this.storageKey.saveCounter, defaultSetting, callback);
     }
   };
 };

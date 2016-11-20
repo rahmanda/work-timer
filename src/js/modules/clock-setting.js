@@ -2,9 +2,7 @@ var ClockSetting = function (context) {
   'use strict';
 
   return {
-    setting: null,
-
-    storage: null,
+    setting: null, storage: null,
 
     messages: ['clock-setting', 'clock-setting-close'],
 
@@ -79,6 +77,7 @@ var ClockSetting = function (context) {
     clearStorage: function() {
       this.storage.removeSetting();
       context.broadcast('flash-message', 'Storage is clear');
+      this.broadcastUpdate();
     },
 
     render: function() {
