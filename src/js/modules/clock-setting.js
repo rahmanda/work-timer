@@ -9,8 +9,9 @@ var ClockSetting = function (context) {
     messages: ['clock-setting', 'clock-setting-close'],
 
     init: function() {
-      this.storage = context.getService('storage');
+      this.storage = context.getService('clock-storage');
       this.storageKey = context.getService('storage-key');
+      this.storage.init();
       this.get();
     },
 
@@ -42,28 +43,24 @@ var ClockSetting = function (context) {
         this.save();
         context.broadcast('flash-message', 'Setting is saved');
         break;
+      case 'clock-setting-clear-storage':
+        this.clearStorage();
+        break;
       }
     },
 
     onchange: function(ev, el, elType) {
       switch (elType) {
       case 'clock-setting-unlimited':
-        this.setting.general.unlimited = el.value;
+        this.setting.general.unlimited = parseInt(el.value, 10);
         break;
       case 'clock-setting-weekly-work-duration':
-        this.setting.general.weeklyWorkDuration = parseInt(el.value, 10);
+        this.setting.general.weeklyWorkHours = parseInt(el.value, 10);
       }
     },
 
     get: function() {
-      var defaultSetting = {};
-      defaultSetting[this.storageKey.setting] = {
-        general: {
-          unlimited: true,
-          weeklyWorkDuration: 0
-        }
-      };
-      this.storage.get(this.storageKey.setting, defaultSetting, this.getSetting.bind(this));
+      this.storage.getSetting(this.getSetting.bind(this));
     },
 
     getSetting: function(item) {
@@ -72,14 +69,21 @@ var ClockSetting = function (context) {
     },
 
     save: function() {
-      var setup = {};
-      setup[this.storageKey.setting] = this.setting;
-      this.storage.set(this.storageKey.setting, setup);
+      this.storage.saveSetting(this.setting, this.broadcastUpdate.bind(this));
+    },
+
+    broadcastUpdate: function() {
+      context.broadcast('clock-setting-update');
+    },
+
+    clearStorage: function() {
+      this.storage.removeSetting();
+      context.broadcast('flash-message', 'Storage is clear');
     },
 
     render: function() {
       document.getElementsByClassName('js-setting-unlimited')[0].value = this.setting.general.unlimited;
-      document.getElementsByClassName('js-setting-weekly')[0].value = this.setting.general.weeklyWorkDuration;
+      document.getElementsByClassName('js-setting-weekly')[0].value = this.setting.general.weeklyWorkHours;
     }
   };
 };

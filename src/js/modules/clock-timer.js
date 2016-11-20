@@ -9,8 +9,6 @@ var ClockTimer = function (context) {
 
   var INTERVAL = 1000; // ms
 
-  var SETTING_KEY = 'wrktmrsttng';
-
   function secondsToTime(secs, json){
     json = json === undefined ? false : json;
     if (secs < 0) { secs = -1 * secs; }
@@ -33,16 +31,25 @@ var ClockTimer = function (context) {
 
     isPaused: false,
 
+    remaining: 0,
+
     duration: 0,
 
     storage: null,
 
     storageKey: null,
 
+    storageDuration: 0,
+
+    setting: null,
+
     init: function() {
       el = context.getElement();
-      this.storage = context.getService('storage');
       this.storageKey = context.getService('storage-key');
+      this.storage = context.getService('clock-storage');
+      this.storage.init();
+      this.getSettingFromStorage();
+      this.getDurationFromStorage();
     },
 
     destroy: function() {
@@ -57,7 +64,9 @@ var ClockTimer = function (context) {
                'clock-timer-save',
                'clock-timer-clear',
                'clock-timer-set-duration',
-              'clock-timer-generate-chart'],
+               'clock-timer-set-remaining',
+               'clock-timer-generate-chart',
+               'clock-setting-update'],
 
     // @param {string} name
     // @param {html string} data
@@ -76,20 +85,45 @@ var ClockTimer = function (context) {
         this.reset();
         break;
       case 'clock-timer-save':
-        var dataset = {};
-        dataset[this.storageKey.timer] = [];
-        this.storage.get(this.storageKey.timer, dataset, this.save.bind(this));
+        this.storage.getTime(this.save.bind(this));
         context.broadcast('flash-message', 'Work time is saved');
         break;
       case 'clock-timer-set-duration':
         this.setDuration(data);
         break;
+      case 'clock-timer-set-remaining':
+        this.setRemaining(data);
+        break;
       case 'clock-timer-generate-chart':
-        var key = {};
-        key[this.storageKey.timer] = [];
-        this.storage.get(this.storageKey.timer, key, this.generateChart.bind(this));
+        this.storage.getTime(this.generateChart.bind(this));
+        break;
+      case 'clock-setting-update':
+        this.getSettingFromStorage();
         break;
       }
+    },
+
+    getSettingFromStorage: function() {
+      this.storage.getSetting(this.setSetting.bind(this));
+    },
+
+    getDurationFromStorage: function() {
+      this.storage.getTime(this.sumDurationFromStorage.bind(this));
+    },
+
+    sumDurationFromStorage: function(item) {
+      var dataset = item[this.storageKey.timer];
+      if (dataset.length > 0) {
+        this.storageDuration = item[this.storageKey.timer].reduce(function(previous, b) {
+          return previous + b.duration;
+        }, 0);
+      }
+      this.renderDuration();
+    },
+
+    setSetting: function(item) {
+      this.setting = item[this.storageKey.setting];
+      this.renderDuration();
     },
 
     // Set end time
@@ -97,6 +131,11 @@ var ClockTimer = function (context) {
     // @return void
     setDuration: function(duration) {
       this.duration = Math.floor(duration);
+      this.renderDuration();
+    },
+
+    setRemaining: function(remaining) {
+      this.remaining = Math.floor(remaining);
       this.render();
     },
 
@@ -107,9 +146,11 @@ var ClockTimer = function (context) {
       var _this = this;
       timer = window.setInterval(function() {
         if(!_this.isPaused) {
-          _this.duration--;
+          _this.remaining--;
+          _this.duration++;
           _this.render();
-          context.broadcast('clock-action-timer-update', secondsToTime(_this.duration, true));
+          _this.renderDuration();
+          context.broadcast('clock-action-timer-update', secondsToTime(_this.remaining, true));
         }
       }, INTERVAL);
     },
@@ -129,17 +170,17 @@ var ClockTimer = function (context) {
     },
 
     save: function(item) {
-      var data = {duration: this.duration, createdAt: Moment().toISOString()};
+      var data = {remaining: this.remaining, duration: this.duration, createdAt: Moment().toISOString()};
       if (item === null) {
-        item = {};
-        item[this.storageKey.timer] = [data];
+        item = [data];
       } else {
-        if (item[this.storageKey.timer].length > 30) {
-          item[this.storageKey.timer].pop();
+        var dataset = item[this.storageKey.timer];
+        if (dataset.length > 30) {
+          dataset.pop();
         }
-        item[this.storageKey.timer].unshift(data);
+        dataset.unshift(data);
       }
-      this.storage.set(this.storageKey.timer, item);
+      this.storage.saveTime(dataset);
     },
 
     // Reset clock
@@ -148,18 +189,33 @@ var ClockTimer = function (context) {
     reset: function() {
       this.isPaused = false;
       this.duration = 0;
+      this.remaining = 0;
       window.clearInterval(timer);
       this.render();
+      this.renderDuration();
     },
 
     render: function() {
       var target = document.getElementsByClassName('js-time')[0];
-      if (this.duration < 0) {
+      if (this.remaining < 0) {
         target.classList.add('u-text--success');
       } else {
         target.classList.remove('u-text--success');
       }
-      target.innerHTML = secondsToTime(this.duration);
+      target.innerHTML = secondsToTime(this.remaining);
+    },
+
+    renderDuration: function() {
+      if (this.setting.general.weeklyWorkHours > 0) {
+        var target = document.getElementsByClassName('js-time-duration')[0];
+        var remaining = this.setting.general.weeklyWorkHours * 3600 - this.duration - this.storageDuration;
+        if (remaining < 0) {
+          target.classList.add('u-text--success');
+        } else {
+          target.classList.remove('u-text--success');
+        }
+        target.innerHTML = secondsToTime(remaining);
+      }
     },
 
     generateChart: function(data) {

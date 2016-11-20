@@ -4,6 +4,7 @@ Box.Application.addBehavior('input-zeroed', require('./behaviors/input-zeroed'))
 
 Box.Application.addService('storage', require('./services/storage'));
 Box.Application.addService('storage-key', require('./services/storage-key'));
+Box.Application.addService('clock-storage', require('./services/clock-storage'));
 
 Box.Application.addModule('flash', require('./modules/flash'));
 Box.Application.addModule('container', require('./modules/container'));
@@ -14,6 +15,6 @@ Box.Application.addModule('clock-setting', require('./modules/clock-setting'));
 
 Box.Application.init();
 
-if (window.chrome) {
+if (window.chrome && chrome.app && chrome.app.runtime) {
   chrome.app.window.current().maximize();
 }

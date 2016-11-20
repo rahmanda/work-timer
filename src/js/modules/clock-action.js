@@ -100,7 +100,8 @@ var ClockAction = function (context) {
     onkeyup: function(ev, el, elType) {
       switch (elType) {
       case 'input-zeroed':
-        context.broadcast('clock-timer-set-duration', this.getDuration(this.getInputValue()));
+        context.broadcast('clock-timer-set-remaining', this.getRemaining(this.getInputValue()));
+        context.broadcast('clock-timer-set-duration', 0);
         break;
       }
     },
@@ -117,7 +118,7 @@ var ClockAction = function (context) {
       };
     },
 
-    getDuration: function(time) {
+    getRemaining: function(time) {
       var hour = parseInt(time.hour, 10);
       var minute = parseInt(time.minute, 10);
       var second = parseInt(time.second, 10);
