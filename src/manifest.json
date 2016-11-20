@@ -1,7 +1,7 @@
 {
-  "name": "Hello World!",
-  "description": "My first Chrome App.",
-  "version": "0.1",
+  "name": "Work Timer",
+  "description": "Track your working time and get information whether you have met your weekly target or not.",
+  "version": "0.2.1",
   "manifest_version": 2,
   "app": {
     "background": {
@@ -11,5 +11,5 @@
   "permissions": [
     "storage"
   ],
-  "icons": { "16": "assets/img/calculator-16.png", "128": "assets/img/calculator-128.png" }
+  "icons": { "16": "assets/img/work-timer-16.png", "128": "assets/img/work-timer-128.png" }
 }
