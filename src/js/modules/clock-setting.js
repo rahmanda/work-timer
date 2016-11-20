@@ -41,6 +41,7 @@ var ClockSetting = function (context) {
         break;
       case 'clock-setting-save':
         this.save();
+        context.broadcast('flash-message', 'Setting is saved');
         break;
       }
     },

@@ -77,6 +77,7 @@ var ClockTimer = function (context) {
         var dataset = {};
         dataset[KEY] = [];
         this.storage.get(KEY, dataset, this.save.bind(this));
+        context.broadcast('flash-message', 'Work time is saved');
         break;
       case 'clock-timer-set-duration':
         this.setDuration(data);

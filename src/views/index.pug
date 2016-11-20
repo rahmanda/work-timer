@@ -14,4 +14,8 @@ html(lang='en')
           include _clock-sidemenu.pug
         include _clock-chart.pug
         include _clock-settings.pug
-      script(src='assets/js/app.min.js', type="text/javascript")
+    .notif(data-module='flash')
+      span.notif__content.js-notif-content
+      span.notif__action
+        i.i-close(data-type='flash-close')
+    script(src='assets/js/app.min.js', type="text/javascript")

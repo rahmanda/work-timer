@@ -4,6 +4,7 @@ Box.Application.addBehavior('input-zeroed', require('./behaviors/input-zeroed'))
 
 Box.Application.addService('storage', require('./services/storage'));
 
+Box.Application.addModule('flash', require('./modules/flash'));
 Box.Application.addModule('container', require('./modules/container'));
 Box.Application.addModule('clock-timer', require('./modules/clock-timer'));
 Box.Application.addModule('clock-action', require('./modules/clock-action'));
