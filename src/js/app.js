@@ -3,6 +3,7 @@ var Box = require('t3js');
 Box.Application.addBehavior('input-zeroed', require('./behaviors/input-zeroed'));
 
 Box.Application.addService('storage', require('./services/storage'));
+Box.Application.addService('storage-key', require('./services/storage-key'));
 
 Box.Application.addModule('flash', require('./modules/flash'));
 Box.Application.addModule('container', require('./modules/container'));

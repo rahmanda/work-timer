@@ -9,7 +9,6 @@ var ClockTimer = function (context) {
 
   var INTERVAL = 1000; // ms
 
-  var KEY = 'wrktmrlst';
   var SETTING_KEY = 'wrktmrsttng';
 
   function secondsToTime(secs, json){
@@ -38,9 +37,12 @@ var ClockTimer = function (context) {
 
     storage: null,
 
+    storageKey: null,
+
     init: function() {
       el = context.getElement();
       this.storage = context.getService('storage');
+      this.storageKey = context.getService('storage-key');
     },
 
     destroy: function() {
@@ -75,8 +77,8 @@ var ClockTimer = function (context) {
         break;
       case 'clock-timer-save':
         var dataset = {};
-        dataset[KEY] = [];
-        this.storage.get(KEY, dataset, this.save.bind(this));
+        dataset[this.storageKey.timer] = [];
+        this.storage.get(this.storageKey.timer, dataset, this.save.bind(this));
         context.broadcast('flash-message', 'Work time is saved');
         break;
       case 'clock-timer-set-duration':
@@ -84,8 +86,8 @@ var ClockTimer = function (context) {
         break;
       case 'clock-timer-generate-chart':
         var key = {};
-        key[KEY] = [];
-        this.storage.get(KEY, key, this.generateChart.bind(this));
+        key[this.storageKey.timer] = [];
+        this.storage.get(this.storageKey.timer, key, this.generateChart.bind(this));
         break;
       }
     },
@@ -130,14 +132,14 @@ var ClockTimer = function (context) {
       var data = {duration: this.duration, createdAt: Moment().toISOString()};
       if (item === null) {
         item = {};
-        item[KEY] = [data];
+        item[this.storageKey.timer] = [data];
       } else {
-        if (item[KEY].length > 30) {
-          item[KEY].pop();
+        if (item[this.storageKey.timer].length > 30) {
+          item[this.storageKey.timer].pop();
         }
-        item[KEY].unshift(data);
+        item[this.storageKey.timer].unshift(data);
       }
-      this.storage.set(KEY, item);
+      this.storage.set(this.storageKey.timer, item);
     },
 
     // Reset clock
@@ -161,7 +163,7 @@ var ClockTimer = function (context) {
     },
 
     generateChart: function(data) {
-      data = data[KEY];
+      data = data[this.storageKey.timer];
       var labels = [];
       var datasets = [];
       if (data) {

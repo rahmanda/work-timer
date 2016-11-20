@@ -1,8 +1,6 @@
 var ClockSetting = function (context) {
   'use strict';
 
-  var KEY = 'wrktmrsttng';
-
   return {
     setting: null,
 
@@ -12,6 +10,7 @@ var ClockSetting = function (context) {
 
     init: function() {
       this.storage = context.getService('storage');
+      this.storageKey = context.getService('storage-key');
       this.get();
     },
 
@@ -58,24 +57,24 @@ var ClockSetting = function (context) {
 
     get: function() {
       var defaultSetting = {};
-      defaultSetting[KEY] = {
+      defaultSetting[this.storageKey.setting] = {
         general: {
           unlimited: true,
           weeklyWorkDuration: 0
         }
       };
-      this.storage.get(KEY, defaultSetting, this.getSetting.bind(this));
+      this.storage.get(this.storageKey.setting, defaultSetting, this.getSetting.bind(this));
     },
 
     getSetting: function(item) {
-      this.setting = item[KEY];
+      this.setting = item[this.storageKey.setting];
       this.render();
     },
 
     save: function() {
       var setup = {};
-      setup[KEY] = this.setting;
-      this.storage.set(KEY, setup);
+      setup[this.storageKey.setting] = this.setting;
+      this.storage.set(this.storageKey.setting, setup);
     },
 
     render: function() {

@@ -13,7 +13,9 @@
           span.box__separator
           p Set your weekly work hours below. If it is set to more than zero, you will see how much your remaining work hours every week.
           .field
-            input.field__input.js-setting-weekly(type='number', value='0', min='0', data-type='clock-setting-weekly-work-duration')
+            .field__input-group
+              input.field__input.js-setting-weekly(type='number', value='0', min='0', data-type='clock-setting-weekly-work-duration')
+              span.field__input-addon hours
           button.btn.btn--cta(data-type='clock-setting-save') Save
     .gr-6.gr-centered
       .box
