@@ -20,4 +20,4 @@ We are working on it, so please stay tuned. In the mean time if you need to try 
 You can either download this repository as zip or clone it to your local machine, then open `chrome://settings/` on your chrome browser. Go to Extensions menu, check on Developer Mode and click Load unpacked extension. File explorer will open up, then go to directory which you stored the downloaded repository. Open folder `dist`, then hit button Open. Launch application by clicking the Launch link, or via Chrome Apps menu on your bookmark toolbar.  
 
 ## Contribute  
-We are open to contributor. Just send your pull request or issue on this repository.
+We are very open to contributor. Just send your pull request or issue on this repository.
