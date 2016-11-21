@@ -201,6 +201,7 @@ var ClockTimer = function (context) {
         var target = document.getElementsByClassName('js-time-duration')[0];
         var remaining = this.setting.general.weeklyWorkHours * 3600 - this.duration - this.storageDuration;
         if (remaining < 0) {
+          remaining = 0;
           target.classList.add('u-text--success');
         } else {
           target.classList.remove('u-text--success');
