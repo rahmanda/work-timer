@@ -14,7 +14,3 @@ Box.Application.addModule('clock-chart', require('./modules/clock-chart'));
 Box.Application.addModule('clock-setting', require('./modules/clock-setting'));
 
 Box.Application.init();
-
-if (window.chrome && chrome.app && chrome.app.runtime) {
-  chrome.app.window.current().maximize();
-}
